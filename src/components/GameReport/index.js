@@ -31,39 +31,43 @@ const GameReport = () => {
       case 'DEFAULT':
       case 'SINGLE_SELECT':
         return (
-          <ul className="report-options-list report-default-options">
+          <ul className="single-optionList">
             {question.options.map(option => (
-              <li key={option.id} className="report-option-item">
-                {option.text}
-                {option.is_correct === 'true' && (
-                  <img
-                    className="report-correct-icon"
-                    src="https://assets.ccbp.in/frontend/react-js/quiz-game-check-circle-img.png"
-                    alt="correct"
-                  />
-                )}
+              <li className="single-list-item" key={option.id}>
+                <div className="probono">
+                  {option.text}
+                  {option.is_correct === 'true' && (
+                    <img
+                      className="report-correct-icon"
+                      src="https://assets.ccbp.in/frontend/react-js/quiz-game-check-circle-img.png"
+                      alt="correct"
+                    />
+                  )}
+                </div>
               </li>
             ))}
           </ul>
         )
       case 'IMAGE':
         return (
-          <ul className="report-options-list report-image-options">
+          <ul className="default-image-list">
             {question.options.map(option => (
-              <li key={option.id} className="report-option-item">
-                <img
-                  src={option.image_url}
-                  alt={option.text}
-                  className="report-option-image"
-                />
-                {option.is_correct === 'true' && (
+              <div className="image-optional-row" key={option.id}>
+                <li key={option.id} id="image-list-item">
                   <img
-                    className="report-correct-icon"
-                    src="https://assets.ccbp.in/frontend/react-js/quiz-game-check-circle-img.png"
-                    alt="correct"
+                    src={option.image_url}
+                    alt={option.text}
+                    className="option-img"
                   />
-                )}
-              </li>
+                  {option.is_correct === 'true' && (
+                    <img
+                      className="report-correct-icon"
+                      src="https://assets.ccbp.in/frontend/react-js/quiz-game-check-circle-img.png"
+                      alt="correct"
+                    />
+                  )}
+                </li>
+              </div>
             ))}
           </ul>
         )
@@ -76,36 +80,68 @@ const GameReport = () => {
     <>
       <Header />
       <div className="game-report-container">
-        <div className="report-summary">
+        <div className="card-container">
           <h2>Quiz Summary</h2>
-          <p>Total Questions: {totalQuestions}</p>
-          <p>Answered: {answeredQuestions}</p>
-          <p>Correct: {correctAnswers}</p>
-          <p>Incorrect: {incorrectAnswers}</p>
-          <p>Unattempted: {unattempted}</p>
-        </div>
-        {unattempted > 0 && (
-          <div className="unattempted-questions">
-            <h2>Unattempted Questions</h2>
-            <div className="questions-scroll-container">
-              <ul className="report-questions-list">
-                {questions.map((question, index) => {
-                  if (!selectedOptions[index]) {
-                    return (
-                      <li key={question.id} className="report-question-item">
-                        <p className="report-question-text">
-                          {question.question_text}
-                        </p>
-                        {renderOptions(question)}
-                      </li>
-                    )
-                  }
-                  return null
-                })}
-              </ul>
+          <div className="report-summary">
+            <div className="score-container">
+              <p className="sco">
+                {answeredQuestions}/{totalQuestions}
+              </p>
+            </div>
+            <div>
+              <div className="container">
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/quiz-game-right-check-img.png"
+                  alt="correct answer icon"
+                  className="image"
+                />
+                <p>{correctAnswers} Correct answers</p>
+              </div>
+              <div className="container">
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/quiz-game-wrong-check-img.png"
+                  alt=" incorrect answer icon"
+                  className="image"
+                />
+                <p>{incorrectAnswers} Incorrect answers</p>
+              </div>
+              <div className="container">
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/quiz-game-un-answered-img.png "
+                  alt="unattempted icon"
+                  className="image"
+                />
+                <p>{unattempted} Unattempted answers</p>
+              </div>
             </div>
           </div>
-        )}
+          {unattempted > 0 ? (
+            <div className="unattempted-questions">
+              <h2>Unattempted Questions</h2>
+              <div className="questions-scroll-container">
+                <ul className="report-questions-list">
+                  {questions.map((question, index) => {
+                    if (!selectedOptions[index]) {
+                      return (
+                        <li key={question.id} className="report-question-item">
+                          <p className="report-question-text">
+                            {question.question_text}
+                          </p>
+                          {renderOptions(question)}
+                        </li>
+                      )
+                    }
+                    return null
+                  })}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <div id="no-nomoar">
+              <p className="attempted-para">Attempted All The questions</p>
+            </div>
+          )}
+        </div>
       </div>
     </>
   )
